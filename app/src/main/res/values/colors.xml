@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00887A</color>
+    <color name="colorPrimaryDark">#005148</color>
+    <color name="colorAccent">#E2E4E3</color>
+
+    <color name="FFAB40">#FFAB40</color>
+    <color name="orange">#e07235</color>
+
+    <color name="colorPrimaryStartOfGradient">#058978</color>
+    <color name="white">#E2E4E3</color>
+    <color name="true_white">#ececec</color>
+    <color name="hint_color">#7ec6be</color>
+    <color name="grey">#727272</color>
+    <color name="light_grey">#d9d9d9</color>
+    <color name="black">#000000</color>
+</resources>

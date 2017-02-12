@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">TaskMe </string>
+    <string name="add_button">ADD</string>
+    <string name="add_del_button">ADD | DEL</string>
+    <string name="del_button">DEL</string>
+    <string name="typing_title_hint">Name your task</string>
+    <string name="typing_content_hint">Add some information…</string>
+    <string name="change_image_res">Change icon</string>
+    <string name="change_clear_all">Clear all fields</string>
+</resources>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_change_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/true_white"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    tools:context="owdienko.jaroslaw.taskme.ChangeContentActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarChangeContentActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ab_gradient"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        android:popupTheme="@style/AppTheme"
+        android:theme="@style/ToolbarColoredBackArrow">
+
+        <EditText
+            android:id="@+id/edit_title_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#00000000"
+            android:ems="10"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/typing_title_hint"
+            android:inputType="textCapSentences"
+            android:maxLength="25"
+            android:textSize="19sp"
+            android:textColor="@color/true_white"
+            android:textColorHint="@color/hint_color"
+            android:textCursorDrawable="@drawable/cursor_white"
+            android:windowSoftInputMode="stateHidden" />
+    </android.support.v7.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/contentChangeContentActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/toolbarChangeContentActivity"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:background="#00000000"
+        android:ems="10"
+        android:freezesText="false"
+        android:gravity="top"
+        android:hint="@string/typing_content_hint"
+        android:inputType="textMultiLine"
+        android:isScrollContainer="true"
+        android:linksClickable="true"
+        android:maxLength="2500"
+        android:overScrollMode="ifContentScrolls"
+        android:padding="5dp"
+        android:paddingBottom="5dp"
+        android:text=""
+        android:textColor="@color/grey"
+        android:textCursorDrawable="@drawable/cursor_color" />
+</RelativeLayout>

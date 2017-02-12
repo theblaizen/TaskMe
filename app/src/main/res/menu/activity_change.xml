@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/change_image_res"
+        android:title="@string/change_image_res"
+        yourapp:showAsAction="never|collapseActionView" />
+    <item
+        android:id="@+id/change_clear_all"
+        android:title="@string/change_clear_all"
+        yourapp:showAsAction="never|collapseActionView" />
+</menu>
