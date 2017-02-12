@@ -16,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
+import owdienko.jaroslaw.taskme.Data.DBHandler;
+import owdienko.jaroslaw.taskme.Data.TaskCollection;
+
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
     private final String TAG = "DebugIssues";
     private Context ResContext;
@@ -58,10 +62,11 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     public String getFirstTwentyFourLetters(String arg) {
         if (arg.isEmpty())
             return arg;
-        else if (arg.length() < 24)
+        else if (arg.length() < 23)
             return arg.substring(0, arg.length());
-        else
+        else if (isSymbolInRow(arg.substring(22, 23)))
             return arg.substring(0, 23) + "...";
+        else return arg.substring(0, 22) + "...";
     }
 
 
@@ -120,5 +125,18 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
     public static boolean activityResult(int requestCode, int resultCode, Intent data) {
         return (resultCode == Activity.RESULT_OK && requestCode == 4268);
+    }
+
+    private boolean isSymbolInRow(String smbl) {
+        boolean flag = true;
+        String[] symbols = {" ", ".", ",", "!", "?", "@", ":", ";", "\'", "\"",
+                "{", "[", "/", "<", "#", "$", "(", "=", "-", "_"};
+        for (int i = 0; i < symbols.length; i++) {
+            if (symbols[i].equals(smbl)) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 }

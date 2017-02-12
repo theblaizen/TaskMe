@@ -6,7 +6,7 @@
         android:title="@string/change_image_res"
         yourapp:showAsAction="never|collapseActionView" />
     <item
-        android:id="@+id/change_clear_all"
-        android:title="@string/change_clear_all"
+        android:id="@+id/change_clear_content"
+        android:title="@string/change_clear_content"
         yourapp:showAsAction="never|collapseActionView" />
 </menu>

@@ -1,4 +1,4 @@
-package owdienko.jaroslaw.taskme;
+package owdienko.jaroslaw.taskme.Data;
 
 /**
  * Created by Jaroslaw Owdienko on 2/6/2017. All rights reserved TaskMe!

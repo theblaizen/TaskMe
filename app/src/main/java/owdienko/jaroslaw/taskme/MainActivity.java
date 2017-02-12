@@ -3,32 +3,26 @@ package owdienko.jaroslaw.taskme;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.nfc.Tag;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
+import owdienko.jaroslaw.taskme.Data.DBHandler;
+import owdienko.jaroslaw.taskme.Data.ImagesEnum;
+import owdienko.jaroslaw.taskme.Data.TaskCollection;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -118,15 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 if (recyclerViewAdapter.getItemCount() > 0) {
                     AlertDialog diaBox = AskOption();
                     diaBox.show();
-                    if (isDeleteRequest) {
-                        String query = "DELETE FROM " + DBHandler.getInstance(MainActivity.this).getTableName();
-                        DBHandler.getInstance(MainActivity.this).execQueryFromActivity(query);
-                        recyclerViewList.removeAllViews();
-                        recyclerViewAdapter.notifyDataSetChanged();
-                        ArrayDatabase.getDataArray().clearAllData();
-
-                        Toast.makeText(MainActivity.this, "You have just deleted all the data!", Toast.LENGTH_LONG).show();
-                    }
                 }
                 return true;
             }
@@ -168,7 +153,13 @@ public class MainActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         //your deleting code
-                        isDeleteRequest = true;
+                        String query = "DELETE FROM " + DBHandler.getInstance(MainActivity.this).getTableName();
+                        DBHandler.getInstance(MainActivity.this).execQueryFromActivity(query);
+                        recyclerViewList.removeAllViews();
+                        recyclerViewAdapter.notifyDataSetChanged();
+                        ArrayDatabase.getDataArray().clearAllData();
+
+                        Toast.makeText(MainActivity.this, "You have just deleted all the data!", Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
 

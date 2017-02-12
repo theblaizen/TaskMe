@@ -12,6 +12,11 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
+import owdienko.jaroslaw.taskme.Data.DBHandler;
+import owdienko.jaroslaw.taskme.Data.ImagesEnum;
+import owdienko.jaroslaw.taskme.Data.TaskCollection;
+
 public class ChangeContentActivity extends AppCompatActivity {
     private final String TAG = "DebugIssues";
 
@@ -73,9 +78,8 @@ public class ChangeContentActivity extends AppCompatActivity {
                     case R.id.change_image_res:
                         //todo image selection activity!
                         break;
-                    case R.id.change_clear_all:
-                        if (!title.getText().toString().isEmpty() && !content.getText().toString().isEmpty()) {
-                            title.setText("");
+                    case R.id.change_clear_content:
+                        if (!content.getText().toString().isEmpty()) {
                             content.setText("");
                         }
                         break;
