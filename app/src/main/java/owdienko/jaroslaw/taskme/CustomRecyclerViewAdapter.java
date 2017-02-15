@@ -9,10 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +55,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View custom_view = inflater.inflate(R.layout.task_row, parent, false);
-
 
         return new ViewHolder(getContext(), custom_view);
     }
@@ -139,4 +140,5 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         }
         return flag;
     }
+
 }

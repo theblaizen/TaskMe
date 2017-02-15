@@ -3,6 +3,8 @@ package owdienko.jaroslaw.taskme;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.*;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,10 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import owdienko.jaroslaw.taskme.Behavior.HidingScrollListener;
 import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
 import owdienko.jaroslaw.taskme.Data.DBHandler;
 import owdienko.jaroslaw.taskme.Data.ImagesEnum;
@@ -30,72 +37,21 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TextView title;
-    private FloatingActionButton fabButton;
+    android.support.design.widget.FloatingActionButton fabButton;
     private RecyclerView recyclerViewList;
     private CustomRecyclerViewAdapter recyclerViewAdapter;
-    private boolean isDeleteRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        isDeleteRequest = false;
 
-        toolbar = (Toolbar) findViewById(R.id.toolbarMainActivity);
-        title = (TextView) findViewById(R.id.tv_title);
-        if (toolbar != null) {
-            try {
-                setSupportActionBar(toolbar);
-                getSupportActionBar().setDisplayShowTitleEnabled(false);
-            } catch (NullPointerException e) {
-                Log.d(TAG, e.getMessage());
-            }
-        }
+        initToolbar();
+        initRecyclerView();
 
-        recyclerViewList = (RecyclerView) findViewById(R.id.list_main_res);
-        recyclerViewAdapter = new CustomRecyclerViewAdapter(this);
-        recyclerViewList.setAdapter(recyclerViewAdapter);
-        recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewAdapter.notifyDataSetChanged();
+        fabButton = (FloatingActionButton) findViewById(R.id.floatingButtonMain);
 
-        fabButton = new FloatingActionButton.Builder(this)
-                .withDrawable(getResources().getDrawable(R.drawable.fab_icon))
-                .withButtonColor(getResources().getColor(R.color.orange))
-                .withButtonSize(84)
-                .withMargins(0, 0, 16, 16)
-                .create();
-        fabButton.showFloatingActionButton();
-        recyclerViewList.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(final RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    // Scrolling up
-                    if (!fabButton.isHidden() && recyclerView.getScrollState() == SCROLL_STATE_DRAGGING) {
-                        fabButton.hideFloatingActionButton();
-                        fabButton.setEnabled(false);
-                    }
-                } else if (dy < 0 && recyclerView.getScrollState() == SCROLL_STATE_IDLE) {
-                    fabButton.hideFloatingActionButton();
-                    fabButton.setEnabled(false);
-                } else {
-                    // Scrolling down
-                    if (fabButton.isHidden() && recyclerView.getScrollState() == SCROLL_STATE_DRAGGING) {
-                        fabButton.showFloatingActionButton();
-                        fabButton.setEnabled(true);
-                    }
-                }
-            }
-        });
-
-
-        fabButton.setClickable(true);
         //button ADD OnClick method.
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 (MainActivity.this).startActivityForResult(intent, 8624);
             }
         });
+
         //OnLongClickListener for ADD button.
         fabButton.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -118,6 +75,40 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbarMainActivity);
+        title = (TextView) findViewById(R.id.tv_title);
+        if (toolbar != null) {
+            try {
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+            } catch (NullPointerException e) {
+                Log.d(TAG, e.getMessage());
+            }
+        }
+    }
+
+    private void initRecyclerView() {
+        recyclerViewList = (RecyclerView) findViewById(R.id.list_main_res);
+        recyclerViewAdapter = new CustomRecyclerViewAdapter(this);
+        recyclerViewList.setAdapter(recyclerViewAdapter);
+        recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewList.setOnScrollListener(new HidingScrollListener(this) {
+            @Override
+            public void onMoved(int distance) {
+                toolbar.setTranslationY(-distance);
+            }
+            @Override
+            public void onShow() {
+                toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+            }
+
+            @Override
+            public void onHide() {
+                toolbar.animate().translationY(-getmToolbarHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+            }
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
 
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        isDeleteRequest = false;
                         dialog.dismiss();
 
                     }
@@ -177,4 +167,5 @@ public class MainActivity extends AppCompatActivity {
         return myQuittingDialogBox;
 
     }
+
 }

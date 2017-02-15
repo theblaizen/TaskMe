@@ -29,9 +29,6 @@ public class ChangeContentActivity extends AppCompatActivity {
     private int idOfElement;
     private int requestCodeActivity;
 
-
-    //TODO EditText data and saving it into DB.
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
