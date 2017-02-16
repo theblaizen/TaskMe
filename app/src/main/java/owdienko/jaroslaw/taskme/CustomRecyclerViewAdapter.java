@@ -90,10 +90,8 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
                 final int position = holder.getLayoutPosition(); // gets item position
                 if (position != RecyclerView.NO_POSITION) {
                     Intent intent = new Intent(context, ChangeContentActivity.class);
-                    intent.putExtra("toolbarTitle", collection.get_title());
                     intent.putExtra("idOfElement", collection.get_id());
                     intent.putExtra("requestCodeActivity", 4268);
-                    Log.e(TAG, String.valueOf(collection.get_id()) + "ID CRVA");
                     intent.putExtra("positionOfElement", position);
                     ((Activity) context).startActivityForResult(intent, 4268);
                 }
