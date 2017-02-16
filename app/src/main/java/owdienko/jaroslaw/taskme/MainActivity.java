@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             public void onMoved(int distance) {
                 toolbar.setTranslationY(-distance);
             }
+
             @Override
             public void onShow() {
                 toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();

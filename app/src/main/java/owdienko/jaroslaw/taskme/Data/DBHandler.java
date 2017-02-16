@@ -7,6 +7,7 @@ package owdienko.jaroslaw.taskme.Data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -136,10 +137,12 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public void updateRowInDatabase(int id, String str, int row) {
         String query = "";
+        str = str.replaceAll("'", "''");
+        str = str.replaceAll("\"", "\"");
         if (row == 0)
-            query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_TASK + " = " + "\"" + str + "\"" + " WHERE " + COLUMN_ID + " = \"" + id + "\";";
+            query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_TASK + " = " + "\'" + str + "\'" + " WHERE " + COLUMN_ID + " = \"" + id + "\";";
         if (row == 1)
-            query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CONTENT + " = " + "\"" + str + "\"" + " WHERE " + COLUMN_ID + " = \"" + id + "\";";
+            query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CONTENT + " = " + "\'" + str + "\'" + " WHERE " + COLUMN_ID + " = \"" + id + "\";";
 
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(query);

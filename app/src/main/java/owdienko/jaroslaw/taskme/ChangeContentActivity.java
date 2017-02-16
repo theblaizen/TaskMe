@@ -53,7 +53,7 @@ public class ChangeContentActivity extends AppCompatActivity {
         title = (EditText) findViewById(R.id.edit_title_change);
         title.getBackground().setColorFilter(getResources().getColor(R.color.true_white), PorterDuff.Mode.SRC_IN);
         title.requestFocus();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         if (requestCodeActivity == 4268) {
             newCollection = ArrayDatabase.getDataArray().getItemByPosition(positionOfElement);
@@ -107,8 +107,8 @@ public class ChangeContentActivity extends AppCompatActivity {
             if (!content.getText().toString().isEmpty() && !title.getText().toString().isEmpty()
                     && !content.getText().toString().matches("^\\s*$")
                     && !title.getText().toString().matches("^\\s*$")) {
-                data_collection.putExtra("newTaskTitle", title.getText().toString());
-                data_collection.putExtra("newTaskContent", content.getText().toString());
+                data_collection.putExtra("newTaskTitle", title.getText().toString().trim());
+                data_collection.putExtra("newTaskContent", content.getText().toString().trim());
                 data_collection.putExtra("newTaskImage", ImagesEnum.DEFAULT_RES); //todo selection of image
             }
             //todo title auto generation
@@ -117,12 +117,13 @@ public class ChangeContentActivity extends AppCompatActivity {
 
         if (requestCodeActivity == 4268) {
             if (!content.getText().toString().isEmpty() && !title.getText().toString().isEmpty()) {
-                newCollection.set_content(content.getText().toString());
-                newCollection.set_title(title.getText().toString());
+                newCollection.set_content(content.getText().toString().trim());
+                newCollection.set_title(title.getText().toString().trim());
                 ArrayDatabase.getDataArray().updateItemInArray(positionOfElement, newCollection);
                 DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_content(), 1);
                 DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_title(), 0);
             } else {
+                //TODO auto title generation
                 newCollection.set_content(" ");
                 newCollection.set_title("Title is empty");
                 ArrayDatabase.getDataArray().updateItemInArray(positionOfElement, newCollection);

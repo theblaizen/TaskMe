@@ -6,7 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="android:textColor">@color/grey</item>
     </style>
 
     <style name="ToolbarColoredBackArrow" parent="AppTheme">
@@ -14,15 +15,17 @@
     </style>
 
     <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <!-- Used for the buttons -->
         <item name="colorAccent">@color/orange</item>
-        <!-- Used for the title and text -->
         <item name="android:textColorPrimary">@color/grey</item>
-        <!-- Used for the background -->
         <item name="android:background">@color/true_white</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
+    </style>
+
+
+    <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
+        <item name="android:itemBackground">@drawable/selector_popup_menu_dropdown</item>
     </style>
 </resources>
