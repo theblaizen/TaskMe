@@ -53,9 +53,9 @@ public class ChangeContentActivity extends AppCompatActivity {
         title = (EditText) findViewById(R.id.edit_title_change);
         title.getBackground().setColorFilter(getResources().getColor(R.color.true_white), PorterDuff.Mode.SRC_IN);
         title.requestFocus();
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         if (requestCodeActivity == 4268) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             newCollection = ArrayDatabase.getDataArray().getItemByPosition(positionOfElement);
             idOfElement = newCollection.get_id();
             title.setText(newCollection.get_title());
