@@ -3,7 +3,6 @@ package owdienko.jaroslaw.taskme;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.*;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,24 +11,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import owdienko.jaroslaw.taskme.Behavior.HidingScrollListener;
 import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
 import owdienko.jaroslaw.taskme.Data.DBHandler;
 import owdienko.jaroslaw.taskme.Data.ImagesEnum;
 import owdienko.jaroslaw.taskme.Data.TaskCollection;
-
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -94,22 +86,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewAdapter = new CustomRecyclerViewAdapter(this);
         recyclerViewList.setAdapter(recyclerViewAdapter);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewList.setOnScrollListener(new HidingScrollListener(this) {
-            @Override
-            public void onMoved(int distance) {
-                toolbar.setTranslationY(-distance);
-            }
-
-            @Override
-            public void onShow() {
-                toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
-            }
-
-            @Override
-            public void onHide() {
-                toolbar.animate().translationY(-getmToolbarHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
-            }
-        });
     }
 
     @Override
