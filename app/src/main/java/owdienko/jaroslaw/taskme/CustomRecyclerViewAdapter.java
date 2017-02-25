@@ -50,13 +50,49 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
 
     @Override
-    public CustomRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CustomRecyclerViewAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View custom_view = inflater.inflate(R.layout.task_row, parent, false);
+        final View custom_view = inflater.inflate(R.layout.task_row, parent, false);
+        final CustomRecyclerViewAdapter.ViewHolder holder = new CustomRecyclerViewAdapter.ViewHolder(getContext(), custom_view);
 
-        return new ViewHolder(getContext(), custom_view);
+        custom_view.setLongClickable(true);
+
+        custom_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final TaskCollection collection = ArrayDatabase.getDataArray().getItemByPosition(holder.getAdapterPosition());
+                final int position = holder.getAdapterPosition(); // gets item position
+                if (position != RecyclerView.NO_POSITION) {
+                    Intent intent = new Intent(custom_view.getContext(), ChangeContentActivity.class);
+                    intent.putExtra("idOfElement", collection.get_id());
+                    intent.putExtra("requestCodeActivity", 4268);
+                    intent.putExtra("positionOfElement", position);
+                    ((Activity) custom_view.getContext()).startActivityForResult(intent, 4268);
+                }
+            }
+        });
+
+        custom_view.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                final TaskCollection collection = ArrayDatabase.getDataArray().getItemByPosition(holder.getAdapterPosition());
+                final int position = holder.getAdapterPosition();  // gets item position
+                if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
+                    Toast.makeText(custom_view.getContext(), collection.get_title() + " | REMOVED", Toast.LENGTH_SHORT).show();
+
+                    DBHandler.getInstance(getContext()).removeRowFromDatabase(collection.get_id());
+                    ArrayDatabase.getDataArray().removeItemFromArray(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, getItemCount());
+//                    notifyDataSetChanged();
+                }
+                return true;
+            }
+        });
+
+        return holder;
     }
 
     //parsing string and cutting 4 words from content.
@@ -81,40 +117,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         titleView.setText(collection.get_title());// .toUpperCase()
         contentView.setText(getFirstTwentyFourLetters(collection.get_content()));
         imageView.setImageResource(collection.get_image());
-        holder.itemView.setLongClickable(true);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Context context = holder.itemView.getContext();
-                final int position = holder.getLayoutPosition(); // gets item position
-                if (position != RecyclerView.NO_POSITION) {
-                    Intent intent = new Intent(context, ChangeContentActivity.class);
-                    intent.putExtra("idOfElement", collection.get_id());
-                    intent.putExtra("requestCodeActivity", 4268);
-                    intent.putExtra("positionOfElement", position);
-                    ((Activity) context).startActivityForResult(intent, 4268);
-                }
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Context context = holder.itemView.getContext();
-                int position = holder.getLayoutPosition(); // gets item position
-                if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                    Toast.makeText(context, titleView.getText() + " | REMOVED", Toast.LENGTH_SHORT).show();
-
-                    DBHandler.getInstance(getContext()).removeRowFromDatabase(collection.get_id());
-                    ArrayDatabase.getDataArray().removeItemFromArray(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, getItemCount());
-                    notifyDataSetChanged();
-                }
-                return true;
-            }
-        });
     }
 
     @Override
