@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK && requestCode == 4268) {
             boolean dataChanged = CustomRecyclerViewAdapter.activityResult(requestCode, resultCode, data);
             if (dataChanged)
-                recyclerViewAdapter.notifyDataSetChanged();
+                recyclerViewAdapter.notifyItemRangeChanged(0, recyclerViewAdapter.getItemCount());
         }
         if (resultCode == Activity.RESULT_OK && requestCode == 8624) {
             TaskCollection collection = new TaskCollection(
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             DBHandler.getInstance(MainActivity.this).addRowToDatabase(collection);
             recyclerViewAdapter.notifyItemInserted(ArrayDatabase.getDataArray().getArraySize() - 1);
             DBHandler.getInstance(MainActivity.this).updateIdOfAllData();
-            recyclerViewAdapter.notifyDataSetChanged();
+            recyclerViewAdapter.notifyItemRangeChanged(0, recyclerViewAdapter.getItemCount());
         }
 
     }
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         String query = "DELETE FROM " + DBHandler.getInstance(MainActivity.this).getTableName();
                         DBHandler.getInstance(MainActivity.this).execQueryFromActivity(query);
                         recyclerViewList.removeAllViews();
-                        recyclerViewAdapter.notifyDataSetChanged();
+                        recyclerViewAdapter.notifyItemRangeChanged(0, recyclerViewAdapter.getItemCount());
                         ArrayDatabase.getDataArray().clearAllData();
 
                         Toast.makeText(MainActivity.this, "You have just deleted all the data!", Toast.LENGTH_LONG).show();

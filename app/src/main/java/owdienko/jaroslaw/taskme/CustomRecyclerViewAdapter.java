@@ -86,9 +86,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
                             "Delete", "Cancel", context, collection.get_title(),
                             position, collection.get_id());
                     diaBox.show();
-//                    notifyItemRemoved(position);
-//                    notifyItemRangeChanged(position, getItemCount());
-//                    notifyDataSetChanged();
                 }
                 return true;
             }
@@ -146,17 +143,15 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     private AlertDialog AskOption(String title, String message, int icon, String positiveButton,
                                   String negativeButton, final Context cxt, final String toastTitle,
                                   final int position, final int id) {
-        Log.e(TAG,"isInDialog?");
+        Log.e(TAG, "isInDialog?");
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(cxt, R.style.AlertDialogStyle)
                 //set message, title, and icon
                 .setTitle(title)
                 .setMessage(message)
                 .setIcon(icon)
-
                 .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //your deleting code
                         DBHandler.getInstance(cxt).removeRowFromDatabase(id);
                         ArrayDatabase.getDataArray().removeItemFromArray(position);
                         Toast.makeText(cxt, toastTitle + " | REMOVED", Toast.LENGTH_SHORT).show();
