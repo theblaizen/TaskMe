@@ -4,4 +4,5 @@
     <string name="typing_content_hint">Add some information…</string>
     <string name="change_image_res">Change icon</string>
     <string name="change_clear_content">Clear content field</string>
+    <string name="settings">Settings</string>
 </resources>

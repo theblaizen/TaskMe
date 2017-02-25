@@ -25,6 +25,7 @@
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
             android:popupTheme="@style/AppTheme"
+            android:theme="@style/ToolbarColoredBackArrow"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <TextView

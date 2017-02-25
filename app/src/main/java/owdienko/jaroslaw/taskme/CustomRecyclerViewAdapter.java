@@ -6,7 +6,9 @@ package owdienko.jaroslaw.taskme;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
@@ -51,7 +53,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
     @Override
     public CustomRecyclerViewAdapter.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        final Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         final View custom_view = inflater.inflate(R.layout.task_row, parent, false);
@@ -80,12 +82,12 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
                 final TaskCollection collection = ArrayDatabase.getDataArray().getItemByPosition(holder.getAdapterPosition());
                 final int position = holder.getAdapterPosition();  // gets item position
                 if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                    Toast.makeText(custom_view.getContext(), collection.get_title() + " | REMOVED", Toast.LENGTH_SHORT).show();
-
-                    DBHandler.getInstance(getContext()).removeRowFromDatabase(collection.get_id());
-                    ArrayDatabase.getDataArray().removeItemFromArray(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, getItemCount());
+                    AlertDialog diaBox = AskOption("Delete", "Do you want to Delete an item?", R.drawable.warning_res,
+                            "Delete", "Cancel", context, collection.get_title(),
+                            position, collection.get_id());
+                    diaBox.show();
+//                    notifyItemRemoved(position);
+//                    notifyItemRangeChanged(position, getItemCount());
 //                    notifyDataSetChanged();
                 }
                 return true;
@@ -141,4 +143,38 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         return flag;
     }
 
+    private AlertDialog AskOption(String title, String message, int icon, String positiveButton,
+                                  String negativeButton, final Context cxt, final String toastTitle,
+                                  final int position, final int id) {
+        Log.e(TAG,"isInDialog?");
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(cxt, R.style.AlertDialogStyle)
+                //set message, title, and icon
+                .setTitle(title)
+                .setMessage(message)
+                .setIcon(icon)
+
+                .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        DBHandler.getInstance(cxt).removeRowFromDatabase(id);
+                        ArrayDatabase.getDataArray().removeItemFromArray(position);
+                        Toast.makeText(cxt, toastTitle + " | REMOVED", Toast.LENGTH_SHORT).show();
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, getItemCount());
+                        dialog.dismiss();
+                    }
+
+                })
+
+                .setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+        return myQuittingDialogBox;
+
+    }
 }

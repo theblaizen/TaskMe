@@ -3,6 +3,7 @@ package owdienko.jaroslaw.taskme;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
@@ -60,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 if (recyclerViewAdapter.getItemCount() > 0) {
-                    AlertDialog diaBox = AskOption();
+                    AlertDialog diaBox = AskOption("Delete", "Do you want to Delete all data",
+                            R.drawable.warning_res, "Delete", "Cancel");
                     diaBox.show();
                 }
                 return true;
@@ -111,14 +114,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private AlertDialog AskOption() {
+    private AlertDialog AskOption(String title, String message, int icon, String positiveButton, String negativeButton) {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this, R.style.AlertDialogStyle)
                 //set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete all data")
-                .setIcon(R.drawable.warning_res)
+                .setTitle(title)
+                .setMessage(message)
+                .setIcon(icon)
 
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         //your deleting code
@@ -135,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 })
 
 
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
@@ -144,6 +147,12 @@ public class MainActivity extends AppCompatActivity {
                 .create();
         return myQuittingDialogBox;
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
 }
