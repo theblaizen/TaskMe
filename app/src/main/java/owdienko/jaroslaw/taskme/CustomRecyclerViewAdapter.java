@@ -58,7 +58,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
         final View custom_view = inflater.inflate(R.layout.task_row, parent, false);
         final CustomRecyclerViewAdapter.ViewHolder holder = new CustomRecyclerViewAdapter.ViewHolder(getContext(), custom_view);
-
         custom_view.setLongClickable(true);
 
         custom_view.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +81,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
                 final TaskCollection collection = ArrayDatabase.getDataArray().getItemByPosition(holder.getAdapterPosition());
                 final int position = holder.getAdapterPosition();  // gets item position
                 if (position != RecyclerView.NO_POSITION) { // Check if an item was deleted, but the user clicked it before the UI removed it
-                    AlertDialog diaBox = AskOption("Delete", "Do you want to Delete an item?", R.drawable.warning_res,
+                    AlertDialog diaBox = AskOption("Delete item", "Do you want to delete an item?", R.drawable.warning_res,
                             "Delete", "Cancel", context, collection.get_title(),
                             position, collection.get_id());
                     diaBox.show();
@@ -154,7 +153,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
                     public void onClick(DialogInterface dialog, int whichButton) {
                         DBHandler.getInstance(cxt).removeRowFromDatabase(id);
                         ArrayDatabase.getDataArray().removeItemFromArray(position);
-                        Toast.makeText(cxt, toastTitle + " | REMOVED", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(cxt, toastTitle + " | REMOVED", Toast.LENGTH_LONG).show();
                         notifyItemRemoved(position);
                         notifyItemRangeChanged(position, getItemCount());
                         dialog.dismiss();
@@ -165,7 +164,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
                 .setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
                 })
                 .create();

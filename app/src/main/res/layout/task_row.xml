@@ -56,15 +56,15 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/row_divider"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:layout_weight="9.9"
-                android:background="@color/light_grey"
-                android:gravity="bottom"
-                android:orientation="horizontal" />
+            <!--<LinearLayout-->
+                <!--android:id="@+id/row_divider"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_gravity="bottom"-->
+                <!--android:layout_weight="9.9"-->
+                <!--android:background="@color/light_grey"-->
+                <!--android:gravity="bottom"-->
+                <!--android:orientation="horizontal" />-->
         </LinearLayout>
 
     </LinearLayout>

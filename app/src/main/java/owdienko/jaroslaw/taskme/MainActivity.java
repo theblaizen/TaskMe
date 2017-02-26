@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onLongClick(View v) {
                 if (recyclerViewAdapter.getItemCount() > 0) {
-                    AlertDialog diaBox = AskOption("Delete", "Do you want to Delete all data",
+                    AlertDialog diaBox = AskOption("Delete all items", "Do you want to delete all data?",
                             R.drawable.warning_res, "Delete", "Cancel");
                     diaBox.show();
                 }
@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         recyclerViewList = (RecyclerView) findViewById(R.id.list_main_res);
+        recyclerViewList.addItemDecoration(
+                new DividerItemDecoration(this, R.drawable.divider_recycler));
         recyclerViewAdapter = new CustomRecyclerViewAdapter(this);
         recyclerViewList.setAdapter(recyclerViewAdapter);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                         recyclerViewAdapter.notifyItemRangeChanged(0, recyclerViewAdapter.getItemCount());
                         ArrayDatabase.getDataArray().clearAllData();
 
-                        Toast.makeText(MainActivity.this, "You have just deleted all the data!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "You have just deleted all data!", Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
 
@@ -141,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-
                     }
                 })
                 .create();
