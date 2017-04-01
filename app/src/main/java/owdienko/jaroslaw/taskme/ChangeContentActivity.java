@@ -155,4 +155,21 @@ public class ChangeContentActivity extends AppCompatActivity {
         return super.onKeyUp(keyCode, event);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
+            DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        toolbar = null;
+        intentToolbarTitle = null;
+        content = null;
+        title = null;
+        newCollection = null;
+    }
 }

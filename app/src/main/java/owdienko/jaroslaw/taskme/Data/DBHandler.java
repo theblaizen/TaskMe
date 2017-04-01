@@ -149,6 +149,21 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateRowsInDatabase(TaskCollection collection) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_CONTENT + " = " + "\'" + collection.get_content() + "\'" + " WHERE " + COLUMN_ID + " = \"" + collection.get_id() + "\";";
+        db.execSQL(query);
+
+        query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_TASK + " = " + "\'" + collection.get_title() + "\'" + " WHERE " + COLUMN_ID + " = \"" + collection.get_id() + "\";";
+        db.execSQL(query);
+
+        query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_IMAGE + " = " + "\'" + collection.get_image() + "\'" + " WHERE " + COLUMN_ID + " = \"" + collection.get_id() + "\";";
+        db.execSQL(query);
+
+        db.close();
+    }
+
     public void updateIdOfAllData() {
         ArrayDatabase.getDataArray().clearAllData();
         selectRowsFromDatabase();

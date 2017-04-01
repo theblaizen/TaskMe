@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
                     data.getIntExtra("newTaskImage", ImagesEnum.DEFAULT_RES));
             ArrayDatabase.getDataArray().addItemToArray(collection);
             recyclerViewAdapter.notifyItemInserted(ArrayDatabase.getDataArray().getArraySize() - 1);
-            DBHandler.getInstance(MainActivity.this).addRowToDatabase(collection);
-            DBHandler.getInstance(MainActivity.this).updateIdOfAllData();
+//            DBHandler.getInstance(MainActivity.this).addRowToDatabase(collection);
+//            DBHandler.getInstance(MainActivity.this).updateIdOfAllData();
             //recyclerViewAdapter.notifyItemRangeChanged(recyclerViewAdapter.getItemCount() - 1, recyclerViewAdapter.getItemCount());
         }
 
@@ -167,4 +167,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyUp(keyCode, event);
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
+            DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
+    }
 }
