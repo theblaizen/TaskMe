@@ -107,13 +107,17 @@ public class ChangeContentActivity extends AppCompatActivity {
             Intent data_collection = new Intent();
             if (!content.getText().toString().isEmpty() && !title.getText().toString().isEmpty()
                     && !content.getText().toString().matches("^\\s*$")
-                    && !title.getText().toString().matches("^\\s*$")) {
+                    && !title.getText().toString().matches("^\\s*$")
+                    && !title.getText().toString().equals("")
+                    && !content.getText().toString().equals("")) {
                 data_collection.putExtra("newTaskTitle", title.getText().toString().trim());
                 data_collection.putExtra("newTaskContent", content.getText().toString().trim());
                 data_collection.putExtra("newTaskImage", ImagesEnum.DEFAULT_RES); //todo selection of image
+                this.setResult(Activity.RESULT_OK, data_collection);
+            } else {
+                this.setResult(Activity.RESULT_CANCELED);
             }
             //todo title auto generation
-            this.setResult(Activity.RESULT_OK, data_collection);
         }
 
         if (requestCodeActivity == 4268) {
@@ -128,12 +132,12 @@ public class ChangeContentActivity extends AppCompatActivity {
                 this.setResult(Activity.RESULT_OK, data_collection);
             } else {
                 //TODO auto title generation
-                newCollection.set_content(" ");
-                newCollection.set_title(" ");
-                ArrayDatabase.getDataArray().updateItemInArray(positionOfElement, newCollection);
-                DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_content(), 1);
-                DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_title(), 0);
-                this.setResult(Activity.RESULT_OK);
+//                newCollection.set_content(" ");
+//                newCollection.set_title(" ");
+//                ArrayDatabase.getDataArray().updateItemInArray(positionOfElement, newCollection);
+//                DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_content(), 1);
+//                DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_title(), 0);
+                this.setResult(Activity.RESULT_CANCELED);
             }
         }
 
@@ -156,20 +160,25 @@ public class ChangeContentActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
             DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
+            DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
 
         toolbar = null;
         intentToolbarTitle = null;
         content = null;
         title = null;
         newCollection = null;
+
     }
 }
