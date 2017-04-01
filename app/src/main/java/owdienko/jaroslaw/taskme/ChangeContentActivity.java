@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -117,20 +118,23 @@ public class ChangeContentActivity extends AppCompatActivity {
 
         if (requestCodeActivity == 4268) {
             if (!content.getText().toString().isEmpty() && !title.getText().toString().isEmpty()) {
+                Intent data_collection = new Intent();
+                data_collection.putExtra("positionOfItemInRV", positionOfElement);
                 newCollection.set_content(content.getText().toString().trim());
                 newCollection.set_title(title.getText().toString().trim());
                 ArrayDatabase.getDataArray().updateItemInArray(positionOfElement, newCollection);
                 DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_content(), 1);
                 DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_title(), 0);
+                this.setResult(Activity.RESULT_OK, data_collection);
             } else {
                 //TODO auto title generation
                 newCollection.set_content(" ");
-                newCollection.set_title("Title is empty");
+                newCollection.set_title(" ");
                 ArrayDatabase.getDataArray().updateItemInArray(positionOfElement, newCollection);
                 DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_content(), 1);
                 DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_title(), 0);
+                this.setResult(Activity.RESULT_OK);
             }
-            this.setResult(Activity.RESULT_OK);
         }
 
         super.onBackPressed();
@@ -141,6 +145,14 @@ public class ChangeContentActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_change, menu);
         return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            toolbar.showOverflowMenu();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
 }

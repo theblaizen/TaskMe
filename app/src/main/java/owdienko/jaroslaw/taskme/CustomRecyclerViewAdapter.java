@@ -153,9 +153,9 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
                     public void onClick(DialogInterface dialog, int whichButton) {
                         DBHandler.getInstance(cxt).removeRowFromDatabase(id);
                         ArrayDatabase.getDataArray().removeItemFromArray(position);
-                        Toast.makeText(cxt, toastTitle + " | REMOVED", Toast.LENGTH_LONG).show();
+                        Toast.makeText(cxt, toastTitle + " | REMOVED", Toast.LENGTH_SHORT).show();
                         notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, getItemCount());
+                        //notifyItemChanged(position);
                         dialog.dismiss();
                     }
 

@@ -12,11 +12,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,11 +88,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         recyclerViewList = (RecyclerView) findViewById(R.id.list_main_res);
+
+        recyclerViewAdapter = new CustomRecyclerViewAdapter(this);
         recyclerViewList.addItemDecoration(
                 new DividerItemDecoration(this, R.drawable.divider_recycler));
-        recyclerViewAdapter = new CustomRecyclerViewAdapter(this);
         recyclerViewList.setAdapter(recyclerViewAdapter);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     @Override
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK && requestCode == 4268) {
             boolean dataChanged = CustomRecyclerViewAdapter.activityResult(requestCode, resultCode, data);
             if (dataChanged)
-                recyclerViewAdapter.notifyItemRangeChanged(0, recyclerViewAdapter.getItemCount());
+                recyclerViewAdapter.notifyItemChanged(data.getIntExtra("positionOfItemInRV", recyclerViewAdapter.getItemCount()));
         }
         if (resultCode == Activity.RESULT_OK && requestCode == 8624) {
             TaskCollection collection = new TaskCollection(
@@ -107,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
                     data.getStringExtra("newTaskContent"),
                     data.getIntExtra("newTaskImage", ImagesEnum.DEFAULT_RES));
             ArrayDatabase.getDataArray().addItemToArray(collection);
-            DBHandler.getInstance(MainActivity.this).addRowToDatabase(collection);
             recyclerViewAdapter.notifyItemInserted(ArrayDatabase.getDataArray().getArraySize() - 1);
+            DBHandler.getInstance(MainActivity.this).addRowToDatabase(collection);
             DBHandler.getInstance(MainActivity.this).updateIdOfAllData();
-            recyclerViewAdapter.notifyItemRangeChanged(0, recyclerViewAdapter.getItemCount());
+            //recyclerViewAdapter.notifyItemRangeChanged(recyclerViewAdapter.getItemCount() - 1, recyclerViewAdapter.getItemCount());
         }
 
     }
@@ -130,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                         String query = "DELETE FROM " + DBHandler.getInstance(MainActivity.this).getTableName();
                         DBHandler.getInstance(MainActivity.this).execQueryFromActivity(query);
                         recyclerViewList.removeAllViews();
-                        recyclerViewAdapter.notifyItemRangeChanged(0, recyclerViewAdapter.getItemCount());
+                        recyclerViewAdapter.notifyDataSetChanged();
                         ArrayDatabase.getDataArray().clearAllData();
 
                         Toast.makeText(MainActivity.this, "You have just deleted all data!", Toast.LENGTH_LONG).show();
@@ -138,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 })
-
 
                 .setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -154,6 +157,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            toolbar.showOverflowMenu();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
 }
