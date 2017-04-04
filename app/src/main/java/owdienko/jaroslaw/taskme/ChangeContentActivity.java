@@ -65,9 +65,9 @@ public class ChangeContentActivity extends AppCompatActivity {
                 content.setText(newCollection.get_content());
         }
 
-        if (requestCodeActivity == 8624) {
-            //idOfElement = newCollection.get_id();
-        }
+//        if (requestCodeActivity == 8624) {
+//            newCollection = ArrayDatabase.getDataArray().getItemByPosition(positionOfElement);
+//        }
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -162,8 +162,19 @@ public class ChangeContentActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
-            DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
+
+        if (!content.getText().toString().isEmpty() && !title.getText().toString().isEmpty()
+                && !content.getText().toString().matches("^\\s*$")
+                && !title.getText().toString().matches("^\\s*$")
+                && !title.getText().toString().equals("")
+                && !content.getText().toString().equals("")
+                && requestCodeActivity == 4268) {
+            newCollection.set_content(content.getText().toString().trim());
+            newCollection.set_title(title.getText().toString().trim());
+            ArrayDatabase.getDataArray().updateItemInArray(positionOfElement, newCollection);
+            DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_content(), 1);
+            DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_title(), 0);
+        }
     }
 
 
@@ -171,8 +182,18 @@ public class ChangeContentActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
-            DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
+//        if (!content.getText().toString().isEmpty() && !title.getText().toString().isEmpty()
+//                && !content.getText().toString().matches("^\\s*$")
+//                && !title.getText().toString().matches("^\\s*$")
+//                && !title.getText().toString().equals("")
+//                && !content.getText().toString().equals("")
+//                && requestCodeActivity == 4268) {
+//            newCollection.set_content(content.getText().toString().trim());
+//            newCollection.set_title(title.getText().toString().trim());
+//            ArrayDatabase.getDataArray().updateItemInArray(positionOfElement, newCollection);
+//            DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_content(), 1);
+//            DBHandler.getInstance(this).updateRowInDatabase(idOfElement, newCollection.get_title(), 0);
+//        }
 
         toolbar = null;
         intentToolbarTitle = null;

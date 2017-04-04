@@ -11,6 +11,7 @@ public class ArrayDatabase {
     private static ArrayDatabase data;
     private static List<TaskCollection> collections = new ArrayList<>();
 
+    @Deprecated
     public static synchronized ArrayDatabase getDataArray() {
         if (data == null)
             data = new ArrayDatabase();
@@ -23,27 +24,32 @@ public class ArrayDatabase {
 
     //Methods are below.
 
-
+    @Deprecated
     public TaskCollection getItemByPosition(int position) {
         return collections.get(position);
     }
 
+    @Deprecated
     public int getArraySize() {
         return collections.size();
     }
 
+    @Deprecated
     public void addItemToArray(TaskCollection task) {
         collections.add(task);
     }
 
+    @Deprecated
     public void updateItemInArray(int position, TaskCollection newCollection) {
         collections.set(position, newCollection);
     }
 
+    @Deprecated
     public void removeItemFromArray(int position) {
         collections.remove(position);
     }
 
+    @Deprecated
     public void clearAllData() {
         collections.clear();
     }

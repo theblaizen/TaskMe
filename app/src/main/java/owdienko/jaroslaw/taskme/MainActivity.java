@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView() {
         recyclerViewList = (RecyclerView) findViewById(R.id.list_main_res);
 
-        recyclerViewAdapter = new CustomRecyclerViewAdapter(this);
         recyclerViewList.addItemDecoration(
                 new DividerItemDecoration(this, R.drawable.divider_recycler));
+        recyclerViewAdapter = new CustomRecyclerViewAdapter(this);
         recyclerViewList.setAdapter(recyclerViewAdapter);
         recyclerViewList.setLayoutManager(new LinearLayoutManager(this));
 
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
-            DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
+//        for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
+//            DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
     }
 }
