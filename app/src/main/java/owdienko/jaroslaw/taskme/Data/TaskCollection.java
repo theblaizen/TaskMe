@@ -27,34 +27,42 @@ public class TaskCollection {
     public TaskCollection() {
     }
 
+    @Deprecated
     public int get_id() {
         return _id;
     }
 
+    @Deprecated
     public void set_id(int _id) {
         this._id = _id;
     }
 
+    @Deprecated
     public String get_title() {
         return _title;
     }
 
+    @Deprecated
     public void set_title(String _title) {
         this._title = _title;
     }
 
+    @Deprecated
     public String get_content() {
         return _content;
     }
 
+    @Deprecated
     public void set_content(String _content) {
         this._content = _content;
     }
 
+    @Deprecated
     public int get_image() {
         return _image;
     }
 
+    @Deprecated
     public void set_image(int _image) {
         this._image = _image;
     }

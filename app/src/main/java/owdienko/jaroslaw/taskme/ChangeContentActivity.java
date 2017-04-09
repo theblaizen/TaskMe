@@ -112,7 +112,7 @@ public class ChangeContentActivity extends AppCompatActivity {
                     && !content.getText().toString().equals("")) {
                 data_collection.putExtra("newTaskTitle", title.getText().toString().trim());
                 data_collection.putExtra("newTaskContent", content.getText().toString().trim());
-                data_collection.putExtra("newTaskImage", ImagesEnum.DEFAULT_RES); //todo selection of image
+                data_collection.putExtra("newTaskImage", ImagesEnum.RESOURCES[0]); //todo selection of image
                 this.setResult(Activity.RESULT_OK, data_collection);
             } else {
                 this.setResult(Activity.RESULT_CANCELED);

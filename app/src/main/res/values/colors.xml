@@ -11,7 +11,7 @@
     <color name="white">#E2E4E3</color>
     <color name="true_white">#ececec</color>
     <color name="hint_color">#86c4bd</color>
-    <color name="grey">#727272</color>
+    <color name="grey">#da727272</color>
     <color name="light_grey">#d9d9d9</color>
     <color name="black">#000000</color>
 </resources>

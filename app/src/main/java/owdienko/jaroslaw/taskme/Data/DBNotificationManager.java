@@ -3,14 +3,16 @@ package owdienko.jaroslaw.taskme.Data;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Jaroslaw Owdienko on 4/4/2017. All rights reserved TaskMe!
  */
 
 public class DBNotificationManager {
-    private HashSet<Listener> taskListeners = new HashSet<>();
+    private Set<Listener> taskListeners = Collections.synchronizedSet(new HashSet<Listener>());
     private Handler taskHandler = new Handler(Looper.getMainLooper());
     private Runnable taskNotifyRunnable = new Runnable() {
         @Override

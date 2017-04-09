@@ -14,6 +14,7 @@ public interface DBContract {
         String TASKS_ID = "rowid";
         String TASKS_TITLE = "task_title";
         String TASKS_CONTENT = "task_content";
+        String TASKS_DATE = "task_date";
         String TASKS_IMAGE = "task_image";
     }
 

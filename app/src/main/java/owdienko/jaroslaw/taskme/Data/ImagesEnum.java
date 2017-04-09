@@ -8,8 +8,8 @@ import owdienko.jaroslaw.taskme.R;
  */
 
 public class ImagesEnum {
-   public static int DEFAULT_RES = R.drawable.default_res,
-            WARNING_RES = R.drawable.warning_res,
-            LIST_RES = R.drawable.list_res,
-            REMINDING_RES = R.drawable.reminding_res;
+    public static final int RESOURCES[] = {R.drawable.default_res,
+            R.drawable.warning_res,
+            R.drawable.list_res,
+            R.drawable.reminding_res};
 }

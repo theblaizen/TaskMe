@@ -7,10 +7,10 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/row_task"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:id="@+id/row_task">
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/row_image"
@@ -45,14 +45,43 @@
                     android:text="TITLE"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/row_context"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:maxLines="1"
-                    android:text="CONTEXT"
-                    android:textSize="12sp" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/row_context"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:layout_weight="1"
+                        android:maxLines="1"
+                        android:text="CONTEXT"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/row_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginRight="20dp"
+                            android:paddingTop="6dp"
+                            android:text="date"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/grey"
+                            android:textSize="8sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

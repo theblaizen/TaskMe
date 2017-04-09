@@ -20,12 +20,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
+import owdienko.jaroslaw.taskme.Data.Constants;
 import owdienko.jaroslaw.taskme.Data.DBHandler;
 import owdienko.jaroslaw.taskme.Data.TaskCollection;
 
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
-    private final String TAG = "DebugIssues";
     private Context ResContext;
 
     public CustomRecyclerViewAdapter(Context context) {
@@ -38,7 +43,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView title, content;
+        public TextView title, content, date;
         public ImageView img;
 
         public ViewHolder(Context context, View itemView) {
@@ -46,6 +51,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
             title = (TextView) itemView.findViewById(R.id.row_title);
             content = (TextView) itemView.findViewById(R.id.row_context);
+            date = (TextView) itemView.findViewById(R.id.row_date);
             img = (ImageView) itemView.findViewById(R.id.row_image);
         }
     }
@@ -110,11 +116,15 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         final TextView titleView = holder.title;
         final TextView contentView = holder.content;
         final ImageView imageView = holder.img;
+        final TextView dateView = holder.date;
         final TaskCollection collection = ArrayDatabase.getDataArray().getItemByPosition(position);
+        Calendar calendar = new GregorianCalendar();
+
 
         titleView.setText(collection.get_title());// .toUpperCase()
         contentView.setText(getFirstTwentyFourLetters(collection.get_content()));
         imageView.setImageResource(collection.get_image());
+        dateView.setText(String.valueOf(format(calendar.getTime()))); //TODO date implementation
     }
 
     @Override
@@ -124,6 +134,10 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
 
     public static boolean activityResult(int requestCode, int resultCode, Intent data) {
         return (resultCode == Activity.RESULT_OK && requestCode == 4268);
+    }
+
+    private static String format(Date date) {
+        return new SimpleDateFormat("dd-MMM-yyyy HH:mm").format(date);
     }
 
     private boolean isSymbolInRow(String smbl) {
@@ -142,7 +156,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     private AlertDialog AskOption(String title, String message, int icon, String positiveButton,
                                   String negativeButton, final Context cxt, final String toastTitle,
                                   final int position, final int id) {
-        Log.e(TAG, "isInDialog?");
+        Log.e(Constants.LOG_TAG, "isInDialog?");
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(cxt, R.style.AlertDialogStyle)
                 //set message, title, and icon
                 .setTitle(title)

@@ -23,13 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
+import owdienko.jaroslaw.taskme.Data.Constants;
+import owdienko.jaroslaw.taskme.Data.DBAsyncRequest;
 import owdienko.jaroslaw.taskme.Data.DBHandler;
 import owdienko.jaroslaw.taskme.Data.ImagesEnum;
 import owdienko.jaroslaw.taskme.Data.TaskCollection;
 
 
 public class MainActivity extends AppCompatActivity {
-    private final String TAG = "DebugIssues";
 
     private Toolbar toolbar;
     private TextView title;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 setSupportActionBar(toolbar);
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             } catch (NullPointerException e) {
-                Log.d(TAG, e.getMessage());
+                Log.d(Constants.LOG_TAG, e.getMessage());
             }
         }
     }
@@ -104,17 +105,19 @@ public class MainActivity extends AppCompatActivity {
             boolean dataChanged = CustomRecyclerViewAdapter.activityResult(requestCode, resultCode, data);
             if (dataChanged)
                 recyclerViewAdapter.notifyItemChanged(data.getIntExtra("positionOfItemInRV", recyclerViewAdapter.getItemCount()));
+            //new DBAsyncRequest("4268", "dagwgwag").execute();
         }
         if (resultCode == Activity.RESULT_OK && requestCode == 8624) {
             TaskCollection collection = new TaskCollection(
                     data.getStringExtra("newTaskTitle"),
                     data.getStringExtra("newTaskContent"),
-                    data.getIntExtra("newTaskImage", ImagesEnum.DEFAULT_RES));
+                    data.getIntExtra("newTaskImage", ImagesEnum.RESOURCES[0]));
             ArrayDatabase.getDataArray().addItemToArray(collection);
             recyclerViewAdapter.notifyItemInserted(ArrayDatabase.getDataArray().getArraySize() - 1);
             DBHandler.getInstance(MainActivity.this).addRowToDatabase(collection);
 //            DBHandler.getInstance(MainActivity.this).updateIdOfAllData();
             //recyclerViewAdapter.notifyItemRangeChanged(recyclerViewAdapter.getItemCount() - 1, recyclerViewAdapter.getItemCount());
+            //new DBAsyncRequest("8624", "asdfasdf").execute();
         }
 
     }
@@ -173,12 +176,12 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
             DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
+//        new DBAsyncRequest(this,"TEST", "onDestroy test").execute();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
 //        for (int i = 0; i < ArrayDatabase.getDataArray().getArraySize(); i++)
 //            DBHandler.getInstance(this).updateRowsInDatabase(ArrayDatabase.getDataArray().getItemByPosition(i));
     }

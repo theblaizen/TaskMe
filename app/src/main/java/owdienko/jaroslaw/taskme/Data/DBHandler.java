@@ -14,7 +14,6 @@ import android.util.Log;
 
 
 public class DBHandler extends SQLiteOpenHelper {
-    private final String TAG = "DebugIssues";
     private static DBHandler dbHandler;
 
     private static final int DATABASE_VERSION = 1;
@@ -124,11 +123,11 @@ public class DBHandler extends SQLiteOpenHelper {
     //ability to change some information from other Activity if it necessary.
     public void execQueryFromActivity(String query) {
         SQLiteDatabase db = getWritableDatabase();
-        Log.d(TAG, "SQLiteDatabase set to getWritableDatabase() -> success\n");
+        Log.d(Constants.LOG_TAG, "SQLiteDatabase set to getWritableDatabase() -> success\n");
         db.execSQL(query);
-        Log.d(TAG, "execSQL set to query -> success\n");
+        Log.d(Constants.LOG_TAG, "execSQL set to query -> success\n");
         db.close();
-        Log.d(TAG, "query executed! -> success\n");
+        Log.d(Constants.LOG_TAG, "query executed! -> success\n");
     }
 
     public void closeDatabase() {
