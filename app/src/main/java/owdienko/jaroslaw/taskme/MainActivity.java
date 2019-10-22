@@ -3,22 +3,21 @@ package owdienko.jaroslaw.taskme;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
 import owdienko.jaroslaw.taskme.Data.DBHandler;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TextView title;
-    android.support.design.widget.FloatingActionButton fabButton;
+    FloatingActionButton fabButton;
     private RecyclerView recyclerViewList;
     private CustomRecyclerViewAdapter recyclerViewAdapter;
 
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == 4268) {
             boolean dataChanged = CustomRecyclerViewAdapter.activityResult(requestCode, resultCode, data);
             if (dataChanged)
