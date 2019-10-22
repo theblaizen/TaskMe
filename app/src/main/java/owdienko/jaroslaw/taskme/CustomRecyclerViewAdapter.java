@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,30 +21,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
 import owdienko.jaroslaw.taskme.Data.DBHandler;
 import owdienko.jaroslaw.taskme.Data.TaskCollection;
+import owdienko.jaroslaw.taskme.Utils.Const;
 
 public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder> {
-    private final String TAG = "DebugIssues";
-    private Context ResContext;
 
-    public CustomRecyclerViewAdapter(Context context) {
-        this.ResContext = context;
+    CustomRecyclerViewAdapter() {
     }
 
-    private Context getContext() {
-        return ResContext;
-    }
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView title, content;
+        ImageView img;
 
-        public TextView title, content;
-        public ImageView img;
-
-        public ViewHolder(Context context, View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
-
-            title = (TextView) itemView.findViewById(R.id.row_title);
-            content = (TextView) itemView.findViewById(R.id.row_context);
-            img = (ImageView) itemView.findViewById(R.id.row_image);
+            title = itemView.findViewById(R.id.row_title);
+            content = itemView.findViewById(R.id.row_context);
+            img = itemView.findViewById(R.id.row_image);
         }
     }
 
@@ -55,26 +47,26 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         final Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        final View custom_view = inflater.inflate(R.layout.task_row, parent, false);
-        final CustomRecyclerViewAdapter.ViewHolder holder = new CustomRecyclerViewAdapter.ViewHolder(getContext(), custom_view);
-        custom_view.setLongClickable(true);
+        final View taskRow = inflater.inflate(R.layout.task_row, parent, false);
+        final CustomRecyclerViewAdapter.ViewHolder holder = new CustomRecyclerViewAdapter.ViewHolder(taskRow);
+        taskRow.setLongClickable(true);
 
-        custom_view.setOnClickListener(new View.OnClickListener() {
+        taskRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final TaskCollection collection = ArrayDatabase.getDataArray().getItemByPosition(holder.getAdapterPosition());
                 final int position = holder.getAdapterPosition(); // gets item position
                 if (position != RecyclerView.NO_POSITION) {
-                    Intent intent = new Intent(custom_view.getContext(), ChangeContentActivity.class);
-                    intent.putExtra("idOfElement", collection.get_id());
-                    intent.putExtra("requestCodeActivity", 4268);
-                    intent.putExtra("positionOfElement", position);
-                    ((Activity) custom_view.getContext()).startActivityForResult(intent, 4268);
+                    Intent intent = new Intent(taskRow.getContext(), ChangeContentActivity.class);
+                    intent.putExtra(Const.TASK_ID, collection.get_id());
+                    intent.putExtra(Const.MODE, Const.EDIT_TASK);
+                    intent.putExtra(Const.TASK_POSITION, position);
+                    ((Activity) taskRow.getContext()).startActivityForResult(intent, Const.EDIT_TASK);
                 }
             }
         });
 
-        custom_view.setOnLongClickListener(new View.OnLongClickListener() {
+        taskRow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 final TaskCollection collection = ArrayDatabase.getDataArray().getItemByPosition(holder.getAdapterPosition());
@@ -97,7 +89,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         if (arg.isEmpty())
             return arg;
         else if (arg.length() < 23)
-            return arg.substring(0, arg.length());
+            return arg;
         else if (isSymbolInRow(arg.substring(22, 23)))
             return arg.substring(0, 23) + "...";
         else return arg.substring(0, 22) + "...";
@@ -121,16 +113,16 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
         return ArrayDatabase.getDataArray().getArraySize();
     }
 
-    public static boolean activityResult(int requestCode, int resultCode, Intent data) {
-        return (resultCode == Activity.RESULT_OK && requestCode == 4268);
+    static boolean activityResult(int requestCode, int resultCode, Intent data) {
+        return (resultCode == Activity.RESULT_OK && requestCode == Const.EDIT_TASK);
     }
 
     private boolean isSymbolInRow(String smbl) {
         boolean flag = true;
         String[] symbols = {" ", ".", ",", "!", "?", "@", ":", ";", "\'", "\"",
                 "{", "[", "/", "<", "#", "$", "(", "=", "-", "_"};
-        for (int i = 0; i < symbols.length; i++) {
-            if (symbols[i].equals(smbl)) {
+        for (String symbol : symbols) {
+            if (symbol.equals(smbl)) {
                 flag = false;
                 break;
             }
@@ -141,8 +133,7 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     private AlertDialog AskOption(String title, String message, int icon, String positiveButton,
                                   String negativeButton, final Context cxt, final String toastTitle,
                                   final int position, final int id) {
-        Log.e(TAG, "isInDialog?");
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(cxt, R.style.AlertDialogStyle)
+        return new AlertDialog.Builder(cxt, R.style.AlertDialogStyle)
                 //set message, title, and icon
                 .setTitle(title)
                 .setMessage(message)
@@ -166,7 +157,6 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
                     }
                 })
                 .create();
-        return myQuittingDialogBox;
 
     }
 }
