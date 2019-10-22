@@ -3,19 +3,21 @@ package owdienko.jaroslaw.taskme;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import owdienko.jaroslaw.taskme.Data.ArrayDatabase;
 import owdienko.jaroslaw.taskme.Data.DBHandler;
 import owdienko.jaroslaw.taskme.Data.ImagesEnum;
 import owdienko.jaroslaw.taskme.Data.TaskCollection;
+import owdienko.jaroslaw.taskme.Utils.Const;
 
 public class ChangeContentActivity extends AppCompatActivity {
     private final String TAG = "DebugIssues";
@@ -33,28 +35,38 @@ public class ChangeContentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_content);
-        toolbar = (Toolbar) findViewById(R.id.toolbarChangeContentActivity);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            try {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                getSupportActionBar().setDisplayShowTitleEnabled(false);
-            } catch (NullPointerException e) {
-                Log.d(TAG, e.getMessage());
-            }
-        }
+        initViews();
+        setupToolbar();
 
+        setToolbarTitle();
+        setClickListeners();
+    }
+
+    private void initViews() {
+        toolbar = findViewById(R.id.toolbarChangeContentActivity);
+        content = findViewById(R.id.contentChangeContentActivity);
+        title = findViewById(R.id.edit_title_change);
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    private void setToolbarTitle(){
         intentToolbarTitle = getIntent();
-        positionOfElement = intentToolbarTitle.getIntExtra("positionOfElement", 0);
-        requestCodeActivity = intentToolbarTitle.getIntExtra("requestCodeActivity", 0);
+        positionOfElement = intentToolbarTitle.getIntExtra(Const.TASK_POSITION, 0);
+        requestCodeActivity = intentToolbarTitle.getIntExtra(Const.MODE, 0);
 
         Log.e(TAG, String.valueOf(positionOfElement));
-        content = (EditText) findViewById(R.id.contentChangeContentActivity);
-        title = (EditText) findViewById(R.id.edit_title_change);
+
         title.getBackground().setColorFilter(getResources().getColor(R.color.true_white), PorterDuff.Mode.SRC_IN);
         title.requestFocus();
 
-        if (requestCodeActivity == 4268) {
+        if (requestCodeActivity == Const.EDIT_TASK) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             newCollection = ArrayDatabase.getDataArray().getItemByPosition(positionOfElement);
             idOfElement = newCollection.get_id();
@@ -64,10 +76,12 @@ public class ChangeContentActivity extends AppCompatActivity {
                 content.setText(newCollection.get_content());
         }
 
-        if (requestCodeActivity == 8624) {
+        if (requestCodeActivity == Const.NEW_TASK) {
             //idOfElement = newCollection.get_id();
         }
+    }
 
+    private void setClickListeners(){
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -101,8 +115,7 @@ public class ChangeContentActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-        if (requestCodeActivity == 8624) {
+        if (requestCodeActivity == Const.NEW_TASK) {
             Intent data_collection = new Intent();
             if (!content.getText().toString().isEmpty() && !title.getText().toString().isEmpty()
                     && !content.getText().toString().matches("^\\s*$")
@@ -113,9 +126,7 @@ public class ChangeContentActivity extends AppCompatActivity {
             }
             //todo title auto generation
             this.setResult(Activity.RESULT_OK, data_collection);
-        }
-
-        if (requestCodeActivity == 4268) {
+        } else if (requestCodeActivity == Const.EDIT_TASK) {
             if (!content.getText().toString().isEmpty() && !title.getText().toString().isEmpty()) {
                 newCollection.set_content(content.getText().toString().trim());
                 newCollection.set_title(title.getText().toString().trim());
